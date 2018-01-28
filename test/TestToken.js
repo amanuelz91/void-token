@@ -9,6 +9,37 @@ const BigNumber = web3.BigNumber;
 */
 contract('TokenMock', function(accounts) {
 
+  describe('Setup', function(){
+    it('should have owners setup'});
+
+    it('should have correct name'});
+
+    it('should have correct symbol'});
+
+    it('should have correct decimals'});
+
+    it('should have correct total supply'});
+
+    it('should have correct hard cap'});
+
+    it('should have correctly set isTransferEnabled'});
+
+    it('should have correct initial balances set'});
+  });
+
+  describe('Ownership', function(){
+    it('should add owner');
+    it('should not add owner if called from non owner');
+  });
+
+  describe('Transfer and Mint', function(){
+    it('should transfer token between peers'});
+    it('should transfer token between peers if balance insufficient'});
+
+    it('should allow to mint only from owners'});
+    it('should disallow to mint from non owners'});
+  });
+
   /*
   * @dev Tests for isTransferEnabled().
   * @dev Try to avoid writing tests for zepplin contracts/dependencies
