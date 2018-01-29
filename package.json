@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
+    "truffle-hdwallet-provider": "0.0.3",
     "zeppelin-solidity": "^1.4.0"
   }
 }

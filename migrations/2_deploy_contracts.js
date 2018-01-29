@@ -1,40 +1,29 @@
-var TokenContract = artifacts.require('./Token.sol');
-var PresaleContract = artifacts.require('./Crowdsale.sol');
+var CrowdsaleContract = artifacts.require('./Crowdsale.sol');
 var MultipleOwners = artifacts.require('./MultipleOwners.sol');
 
 module.exports = function(deployer, network, accounts) {
 
+  if (network == "develop" || network == "development") {
+    var _rate = web3.toWei(2000000); // 2,000,000 VOID/ETH.
+    var _wallet = accounts[2];
+    var _isPurchaseEnabled = true;
+    var _hardCap = web3.toWei(200000000, "ether"); // 200,000,000 VOID.
+
+  } else if (network == "rinkeby") {
+    var _rate = web3.toWei(2000000); // 2,000,000 VOID/ETH.
+    // FIXME: Set correct testnet wallet address.
+    var _wallet = "0x0000000000000000000000000000000000000000";
+    var _isPurchaseEnabled = true;
+    var _hardCap = web3.toWei(200000000, "ether"); // 200,000,000 VOID.
+
+  } else if (network == "mainnet") {
+    var _rate = web3.toWei(2000000); // 2,000,000 VOID/ETH.
+    // FIXME: Set correct wallet address before launch.
+    var _wallet = "0x0000000000000000000000000000000000000000";
+    var _isPurchaseEnabled = true;
+    var _hardCap = web3.toWei(200000000, "ether"); // 200,000,000 VOID.
+  }
+
+  deployer.deploy(CrowdsaleContract, _rate, _wallet, _hardCap, {gas: 3000000});
   deployer.deploy(MultipleOwners);
-
-  /* Token parameters. */
-  let _name = 'Void';
-  let _symbol = 'VOID';
-  let _decimals = 18;
-  let _initialSupply = web3.toWei('20000000', 'ether');
-  let _isTransferEnabled = true;
-
-  /* Crowdsale parameters. */
-  let _wallet = accounts[1]; // FIXME: Change this address.
-  let _isPurchaseEnabled = true;
-  let _rate = 2200000; // See estimates in 3_contracts_config.js.
-  let _cap = _initialSupply; // See estimates in 3_contracts_config.js.
-
-  deployer.deploy(
-    TokenContract,
-    _name,
-    _symbol,
-    _decimals,
-    _initialSupply,
-    _isTransferEnabled,
-    {gas: 3000000}
-  );
-
-  deployer.deploy(
-    PresaleContract,
-    _wallet,
-    _isPurchaseEnabled,
-    _rate,
-    _cap,
-    {gas: 3000000}
-  );
 };

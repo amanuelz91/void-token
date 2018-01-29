@@ -11,7 +11,7 @@ contract Token is MintableToken, BurnableToken, PausableToken, MultipleOwners {
 	string public name = 'VoidToken';
 	string public symbol = 'VOID';
 	uint public decimals = 18;
-	uint public initialSupply = 12000000;
+	uint public initialSupply = 0;
 
 	/**
   * @dev Constructor.
