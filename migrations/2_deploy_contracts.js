@@ -10,14 +10,14 @@ module.exports = function(deployer, network, accounts) {
   let _name = 'Void';
   let _symbol = 'VOID';
   let _decimals = 18;
-  let _initialSupply = 12000000;
+  let _initialSupply = web3.toWei('20000000', 'ether');
   let _isTransferEnabled = true;
 
   /* Crowdsale parameters. */
-  let _wallet = accounts[1];
+  let _wallet = accounts[1]; // FIXME: Change this address.
   let _isPurchaseEnabled = true;
-  let _rate = 1; // Replaced by 3_contracts_config.js.
-  let _cap = _initialSupply; // Replaced by 3_contracts_config.js.
+  let _rate = 2200000; // See estimates in 3_contracts_config.js.
+  let _cap = _initialSupply; // See estimates in 3_contracts_config.js.
 
   deployer.deploy(
     TokenContract,
