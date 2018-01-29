@@ -8,7 +8,6 @@ contract Crowdsale is Ownable {
 
   using SafeMath for uint256;
   // Properties. ---------------------------
-  address public owner; // Owner of the contract.
   address public wallet; // Address to which funds can be withdrawn.
   uint256 public cap; // Fixed cap for this round of the sale.
   uint256 public rate; // How many token units a buyer gets per wei.
@@ -34,7 +33,6 @@ contract Crowdsale is Ownable {
     isPurchaseEnabled = _isPurchaseEnabled;
     rate = _rate;
     cap = _cap;
-    owner = msg.sender;
   }
 
   /*
