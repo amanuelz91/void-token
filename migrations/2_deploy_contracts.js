@@ -24,6 +24,6 @@ module.exports = function(deployer, network, accounts) {
     var _hardCap = web3.toWei(200000000, "ether"); // 200,000,000 VOID.
   }
 
-  deployer.deploy(CrowdsaleContract, _rate, _wallet, _hardCap, {gas: 3000000});
+  deployer.deploy(CrowdsaleContract, _wallet, _isPurchaseEnabled, _rate, _hardCap, {gas: 3000000});
   deployer.deploy(MultipleOwners);
 };
