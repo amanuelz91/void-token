@@ -1,14 +1,15 @@
 const CrowdsaleMock = artifacts.require('Crowdsale');
 const BigNumber = web3.BigNumber;
 
-// Properties/constructor args.
-// Wallet address from accounts[2].
-const WALLET = '0xc5fdf4076b8f3a5357c5e395ab970b5b54098fef';
-const IS_PURCHASE_ENABLED = true;
-const RATE = new BigNumber(web3.toWei(2000000));
-const CAP = new BigNumber(web3.toWei(200000000));
+
 
 contract('Crowdsale', function(accounts) {
+
+  // Properties/constructor args.
+  const WALLET = accounts[2];
+  const IS_PURCHASE_ENABLED = true;
+  const RATE = new BigNumber(web3.toWei(2000000));
+  const CAP = new BigNumber(web3.toWei(200000000));
 
   describe('Initial Properties', function() {
 

@@ -15,10 +15,22 @@ contract MultipleOwners is Ownable {
         _;
     }
 
-    function addOwner(address newOwner) public onlyOwner {
-        require(!owners[msg.sender].isOwner);
-        owners[newOwner] = Owner(true, ownersLUT.length);
-        ownersLUT.push(newOwner);
+    event AddedOwner(address owner);
+    event RemovedOwner(address owner);
+
+    /*
+    * @dev Check if a given address is an owner.
+    * @param _address the address to
+    */
+    function isOwner(address _address) public view returns (bool) {
+      return owners[_address].isOwner;
+    }
+
+    function addOwner(address _newOwner) public onlyOwner {
+        require(!owners[_newOwner].isOwner);
+        owners[_newOwner] = Owner(true, ownersLUT.length);
+        ownersLUT.push(_newOwner);
+        AddedOwner(_newOwner);
     }
 
     function removeOwner(address _owner) public onlyOwner {
@@ -29,5 +41,6 @@ contract MultipleOwners is Ownable {
         ownersLUT.length--;
         // remove Owner from mapping
         delete owners[_owner];
+        RemovedOwner(_owner);
     }
 }
