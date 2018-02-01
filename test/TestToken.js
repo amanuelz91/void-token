@@ -67,6 +67,8 @@ contract('TokenMock', function(accounts) {
       assert.isTrue(is_owner_final, 'Address is not owner after adding owner.');
     });
 
+    it('should allow owner to remove owners')
+
     it('should not allow non-owner to add owners', async function() {
       const fake_owner = '0x0D84fcDdFb862d607c547D609B61d0edA2B604c2';
       const new_owner = '0xA5668EfF3849620749AAa3a58ec197630f7bF601';
