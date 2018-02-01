@@ -78,14 +78,14 @@ contract Crowdsale is Ownable {
   }
 
   /*
-  * @dev Similar to validPurchase() function in OpenZepellin Crowdsale.sol.
+  * @dev Similar to validPurchase() function in OpenZepellin CappedCrowdsale.sol.
   * @dev Includes check for isPurchaseEnabled.
   * @returns true if the transaction can buy tokens.
   */
   function validPurchase() internal view returns (bool) {
     bool nonZeroPurchase = msg.value != 0;
-    bool capReached = hasEnded();
-    return isPurchaseEnabled && nonZeroPurchase && !capReached;
+    bool withinCap = weiRaised.add(msg.value) <= cap;
+    return isPurchaseEnabled && nonZeroPurchase && withinCap;
   }
 
   /*
@@ -96,15 +96,6 @@ contract Crowdsale is Ownable {
   function hasEnded() public view returns (bool) {
     bool capReached = weiRaised >= cap;
     return capReached;
-  }
-
-  /**
-  * @dev Change the conversion rate at which tokens may be purchased.
-  * @param _rate Conversion rate of wei to tokens.
-  */
-  function setRate(uint256 _rate) public onlyOwner returns (bool) {
-    rate = _rate;
-    return true;
   }
 
   /**

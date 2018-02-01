@@ -9,7 +9,7 @@ const BigNumber = web3.BigNumber;
 */
 contract('TokenMock', function(accounts) {
 
-  // Properties/constructor args.
+  // Token properties/constructor args.
   const NAME = 'VoidToken';
   const SYMBOL = 'VOID';
   const DECIMALS = 18;
