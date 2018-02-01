@@ -13,7 +13,6 @@ contract('Crowdsale', function(accounts) {
 
   // Crowdsale properties/constructor args.
   const WALLET = accounts[2];
-  const IS_PURCHASE_ENABLED = true;
   const RATE = new BigNumber(web3.toWei(2000000));
   const CAP = new BigNumber(web3.toWei(200000000));
 
@@ -28,9 +27,9 @@ contract('Crowdsale', function(accounts) {
       assert.equal(wallet, WALLET, 'Incorrect wallet.');
     });
 
-    it('should have correct value for purchase enabled', async function() {
-      let isPurchaseEnabled = await contract.isPurchaseEnabled();
-      assert.equal(isPurchaseEnabled, IS_PURCHASE_ENABLED, 'Incorrect value for purchase enabled.');
+    it('should be unpaused', async function() {
+      let paused = await contract.paused();
+      assert.isFalse(paused, 'Contract is paused when it should not be.');
     });
 
     it('should have correct rate', async function() {
@@ -52,7 +51,7 @@ contract('Crowdsale', function(accounts) {
   describe('Set Token', function(){
     beforeEach('Deploy contract and assign token contract', async function(){
       // Deploy crowdsale contract.
-      contract = await CrowdsaleMock.new(WALLET, IS_PURCHASE_ENABLED, RATE, CAP, {gas: 3000000});
+      contract = await CrowdsaleMock.new(WALLET, RATE, CAP, {gas: 3000000});
     });
 
     it('should set token contract', async function() {
@@ -72,7 +71,7 @@ contract('Crowdsale', function(accounts) {
   describe('Purchase', function() {
     beforeEach('deploy new CrowdsaleMock', async () => {
       // Deploy crowdsale contract.
-      contract = await CrowdsaleMock.new(WALLET, IS_PURCHASE_ENABLED, RATE, CAP, {gas: 3000000});
+      contract = await CrowdsaleMock.new(WALLET, RATE, CAP, {gas: 3000000});
       // Deploy token contract.
       token = await TokenMock.new(NAME, SYMBOL, DECIMALS, INITIAL_SUPPLY, {gas: 3000000});
       // Assign token contract to crowdsale.
@@ -114,7 +113,7 @@ contract('Crowdsale', function(accounts) {
       // Set small cap.
       const small_cap = web3.toWei(20, 'ether');
       // Deploy crowdsale contract.
-      contract = await CrowdsaleMock.new(WALLET, IS_PURCHASE_ENABLED, RATE, small_cap, {gas: 3000000});
+      contract = await CrowdsaleMock.new(WALLET, RATE, small_cap, {gas: 3000000});
       // Deploy token contract.
       token = await TokenMock.new(NAME, SYMBOL, DECIMALS, INITIAL_SUPPLY, {gas: 3000000});
       // Assign token contract to crowdsale.

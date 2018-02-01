@@ -1,10 +1,10 @@
 pragma solidity ^0.4.18;
 
-import 'zeppelin-solidity/contracts/ownership/Ownable.sol';
+import 'zeppelin-solidity/contracts/lifecycle/Pausable.sol';
 import 'zeppelin-solidity/contracts/math/SafeMath.sol';
 import './Token.sol';
 
-contract Crowdsale is Ownable {
+contract Crowdsale is Pausable {
 
   using SafeMath for uint256;
   // Properties. ---------------------------
@@ -13,7 +13,6 @@ contract Crowdsale is Ownable {
   uint256 public rate; // How many token units a buyer gets per wei.
   uint256 public weiRaised; // Amount of raised money in wei.
   Token public token; // The token being sold.
-  bool public isPurchaseEnabled; // Token purchases enabled/disabled.
 
   // Events.
   event Purchase(address indexed from, address indexed to, uint256 value, uint256 tokens);
@@ -24,13 +23,11 @@ contract Crowdsale is Ownable {
   */
   function Crowdsale(
     address _wallet,
-    bool _isPurchaseEnabled,
     uint _rate,
     uint _cap
   )
   public {
     wallet = _wallet;
-    isPurchaseEnabled = _isPurchaseEnabled;
     rate = _rate;
     cap = _cap;
   }
@@ -79,13 +76,13 @@ contract Crowdsale is Ownable {
 
   /*
   * @dev Similar to validPurchase() function in OpenZepellin CappedCrowdsale.sol.
-  * @dev Includes check for isPurchaseEnabled.
+  * @dev Includes check for pause.
   * @returns true if the transaction can buy tokens.
   */
   function validPurchase() internal view returns (bool) {
     bool nonZeroPurchase = msg.value != 0;
     bool withinCap = weiRaised.add(msg.value) <= cap;
-    return isPurchaseEnabled && nonZeroPurchase && withinCap;
+    return !paused && nonZeroPurchase && withinCap;
   }
 
   /*
@@ -96,15 +93,6 @@ contract Crowdsale is Ownable {
   function hasEnded() public view returns (bool) {
     bool capReached = weiRaised >= cap;
     return capReached;
-  }
-
-  /**
-  * @dev Enable or disable the ability to purchase tokens.
-  * @dev Should not affect ability to transfer tokens.
-  */
-  function togglePurchases() public onlyOwner returns (bool) {
-    isPurchaseEnabled = !isPurchaseEnabled;
-    return true;
   }
 
   /**
