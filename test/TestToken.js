@@ -67,7 +67,33 @@ contract('TokenMock', function(accounts) {
       assert.isTrue(is_owner_final, 'Address is not owner after adding owner.');
     });
 
-    it('should allow owner to remove owners')
+    it('should allow owner to remove owners', async function() {
+      const new_owner = accounts[7];
+      is_owner_initial = await contract.isOwner(new_owner);
+      assert.isFalse(is_owner_initial, 'Address is owner when it should not be.');
+      // Add owner.
+      await contract.addOwner(new_owner);
+      is_owner_final = await contract.isOwner(new_owner);
+      assert.isTrue(is_owner_final, 'Address is not owner after adding owner.');
+      // Remove owner.
+      await contract.removeOwner(new_owner);
+      is_owner_still = await contract.isOwner(new_owner);
+      assert.isFalse(is_owner_still, 'Address is still an owner when it should have been removed.')
+    });
+
+    it('should allow owners to remove themselves', async function() {
+      const new_owner = accounts[4];
+      is_owner_initial = await contract.isOwner(new_owner);
+      assert.isFalse(is_owner_initial, 'Address is owner when it should not be.');
+      // Add owner.
+      await contract.addOwner(new_owner);
+      is_owner_final = await contract.isOwner(new_owner);
+      assert.isTrue(is_owner_final, 'Address is not owner after adding owner.');
+      // Remove owner as owner.
+      await contract.removeOwner(new_owner, {from: new_owner});
+      is_owner_still = await contract.isOwner(new_owner);
+      assert.isFalse(is_owner_still, 'Address is still an owner when it should have been removed.')
+    });
 
     it('should not allow non-owner to add owners', async function() {
       const fake_owner = '0x0D84fcDdFb862d607c547D609B61d0edA2B604c2';
